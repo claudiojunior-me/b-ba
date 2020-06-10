@@ -10,6 +10,7 @@ const appReducer = (state: any, action: any) => {
             try {
                 const currentDate = new Date().setHours(0, 0, 0, 0)
                 AsyncStorage.setItem(currentDate.toString(), (state.drinkedMl + action.value).toString())
+                // AsyncStorage.removeItem(currentDate.toString())
             } catch (error) {
                 console.error(error)
             }

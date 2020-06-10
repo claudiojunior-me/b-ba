@@ -16,6 +16,7 @@ import {
     IndicatorText1,
     IndicatorText2,
     ButtonAdd,
+    ButtonAddContainer,
 } from './Styled'
 
 const phrases = ['Ta na hora de beber mais água', 'Já se hidratou hoje?', 'Que tal mais um copo de água']
@@ -28,6 +29,7 @@ interface Notification {
 export default function Home() {
     const { drinkedMl, totalForDay } = useAppState()
     const appDispatch = useAppDispatch()
+    const [bubblesContainerDimension, setBubblesContainerDimension] = useState<Object>({})
     const [expoPushToken, setExpoPushToken] = useState<String>('')
     const [notification, setNotification] = useState<Notification | undefined>(undefined)
 
@@ -72,36 +74,66 @@ export default function Home() {
         // return () => {}
     })
 
+    const btnValues = [700, 250, 100, 500]
+
+    const getViewDimensions = (event) => {
+        const { x, y, height, width } = event.nativeEvent.layout
+        // const newHeight = this.state.view2LayoutProps.height + 1;
+        const newLayout = {
+            height: height,
+            width: width - 10,
+            left: x,
+            top: y,
+        }
+
+        console.log(newLayout)
+        setBubblesContainerDimension(newLayout)
+    }
+
     return (
         <Container>
             <ProgressBarContainer>
-                <ProgressBarText>25%</ProgressBarText>
+                <ProgressBarText>{parseInt((drinkedMl * 100) / totalForDay)}%</ProgressBarText>
                 <ProgressBarElement>
                     <ProgressBarBackground />
-                    <ProgressBarIndicator />
+                    <ProgressBarIndicator value={(drinkedMl * 100) / totalForDay} />
                 </ProgressBarElement>
             </ProgressBarContainer>
             <View
+                onLayout={getViewDimensions}
                 style={{
                     flex: 1,
                     flexDirection: 'column',
                 }}>
                 <IndicatorsLine>
-                    <IndicatorText1>625 ML</IndicatorText1>
-                    <IndicatorText2>/ 2.5 L</IndicatorText2>
+                    <IndicatorText1>{drinkedMl} ML</IndicatorText1>
+                    <IndicatorText2>/ {totalForDay / 1000} L</IndicatorText2>
                 </IndicatorsLine>
 
-                <ButtonAdd />
-                <ButtonAdd />
-                <ButtonAdd />
-                <ButtonAdd />
+                {bubblesContainerDimension &&
+                    bubblesContainerDimension.width &&
+                    btnValues.map((value, idx) => {
+                        const sum = Math.max(...btnValues)
+                        const avg = (value * 100) / sum
+                        const avg2 = ((avg < 30 ? 30 : avg) * bubblesContainerDimension.width) / 100
+
+                        return (
+                            <ButtonAddContainer
+                                key={idx}
+                                size={avg2}
+                                alignEnd={idx % 2 !== 0}
+                                onPress={() => appDispatch({ type: 'sum', value })}>
+                                <ButtonAdd size={avg2} />
+                            </ButtonAddContainer>
+                        )
+                    })}
             </View>
             {/* <Headline>
                 Olá, hoje você já consumiu <Title>{drinkedMl}mL</Title> de água de um total de{' '}
                 <Title>{totalForDay}mL</Title>
             </Headline>
             <ProgressBar
-                progress={drinkedMl / totalForDay}
+                progress={(drinkedMl * 100) / totalForDay}
                 color={Colors.blue400}
                 style={{
                     marginHorizontal: 15,

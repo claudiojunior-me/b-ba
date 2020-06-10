@@ -35,9 +35,13 @@ export const ProgressBarBackground = styled.View`
     border-radius: 30px;
     border: 2px solid rgba(255, 255, 255, 0.3);
 `
+
+interface ProgressBarIndicatorProps {
+    value: number
+}
 export const ProgressBarIndicator = styled.View`
     background-color: #7ca5e6;
-    height: 25%;
+    height: ${(props: ProgressBarIndicatorProps) => (props.value < 100 ? `${props.value}%` : '100%')};
     width: 40px;
     position: absolute;
     bottom: 5px;
@@ -48,6 +52,7 @@ export const ProgressBarIndicator = styled.View`
 export const IndicatorsLine = styled.View`
     flex-direction: row;
     padding: 0 8px 0 8px;
+    margin-bottom: 16px;
     height: 48px;
     align-items: flex-end;
     justify-content: flex-end;
@@ -67,9 +72,22 @@ export const IndicatorText2 = styled.Text`
     font-weight: bold;
 `
 
+interface ButtonProps {
+    size: number
+    alignEnd?: boolean
+}
+
+export const ButtonAddContainer = styled.TouchableHighlight`
+    background-color: white;
+    height: ${(props: ButtonProps) => `${props.size}px` || '150px'};
+    width: ${(props: ButtonProps) => `${props.size}px` || '150px'};
+    border-radius: ${(props: ButtonProps) => `${props.size / 2}px` || '75px'};
+    align-self: ${(props: ButtonProps) => (props.alignEnd ? 'flex-end' : 'flex-start')};
+`
+
 export const ButtonAdd = styled.View`
     background-color: rgba(107, 136, 195, 0.6);
-    height: 150px;
-    width: 150px;
-    border-radius: 75px;
+    height: ${(props: ButtonProps) => `${props.size}px` || '150px'};
+    width: ${(props: ButtonProps) => `${props.size}px` || '150px'};
+    border-radius: ${(props: ButtonProps) => `${props.size / 2}px` || '75px'};
 `
