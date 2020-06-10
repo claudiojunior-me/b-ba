@@ -5,6 +5,18 @@ import { Notifications } from 'expo'
 import * as Permissions from 'expo-permissions'
 import Constants from 'expo-constants'
 import { useAppState, useAppDispatch } from '../contexts/app.context'
+import {
+    Container,
+    ProgressBarContainer,
+    ProgressBarText,
+    ProgressBarElement,
+    ProgressBarBackground,
+    ProgressBarIndicator,
+    IndicatorsLine,
+    IndicatorText1,
+    IndicatorText2,
+    ButtonAdd,
+} from './Styled'
 
 const phrases = ['Ta na hora de beber mais água', 'Já se hidratou hoje?', 'Que tal mais um copo de água']
 
@@ -55,14 +67,36 @@ export default function Home() {
     }
 
     useEffect(() => {
-        registerForPushNotificationsAsync()
-        Notifications.addListener(_handleNotification)
-        return () => {}
+        // registerForPushNotificationsAsync()
+        // Notifications.addListener(_handleNotification)
+        // return () => {}
     })
 
     return (
-        <View style={styles.container}>
-            <Headline>
+        <Container>
+            <ProgressBarContainer>
+                <ProgressBarText>25%</ProgressBarText>
+                <ProgressBarElement>
+                    <ProgressBarBackground />
+                    <ProgressBarIndicator />
+                </ProgressBarElement>
+            </ProgressBarContainer>
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                }}>
+                <IndicatorsLine>
+                    <IndicatorText1>625 ML</IndicatorText1>
+                    <IndicatorText2>/ 2.5 L</IndicatorText2>
+                </IndicatorsLine>
+
+                <ButtonAdd />
+                <ButtonAdd />
+                <ButtonAdd />
+                <ButtonAdd />
+            </View>
+            {/* <Headline>
                 Olá, hoje você já consumiu <Title>{drinkedMl}mL</Title> de água de um total de{' '}
                 <Title>{totalForDay}mL</Title>
             </Headline>
@@ -96,8 +130,8 @@ export default function Home() {
                 label='Adicionar 100mL'
                 onPress={() => appDispatch({ type: 'sum', value: 100 })}
                 disabled={drinkedMl >= totalForDay}
-            />
-        </View>
+            /> */}
+        </Container>
     )
 }
 
