@@ -1,5 +1,8 @@
 {
     "expo": {
+        "experiments": {
+            "redesignedLogBox": true
+        },
         "name": "B-Ba",
         "slug": "b-ba",
         "platforms": ["ios", "android", "web"],
@@ -20,7 +23,8 @@
         },
         "android": {
             "package": "com.yombox.b_ba",
-            "googleServicesFile": "./google-services.json"
+            "googleServicesFile": "./google-services.json",
+            "useNextNotificationsApi": true
         }
     }
 }
